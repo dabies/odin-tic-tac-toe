@@ -5,12 +5,17 @@ const $banner = document.querySelector('.banner');
 const $playerOneName = document.getElementById('playerOne');
 const $playerTwoName = document.getElementById('playerTwo');
 
+//array for squares
+const boardArray = [];
+
 //bind events
 $playBtn.addEventListener('click', startGame);
 function startGame() {
     $boardBtn.forEach((item) => {
         item.addEventListener('click', makeMove);
+        boardArray.push(item);
     });
+displayOnBanner(`${playerOne.value}'s turn`);
 }
 
 function createPlayer(name, number) {
@@ -38,23 +43,39 @@ const counter = (function() {
     return {getCount, addCount}
 })();
 
-const game = (function() {
+function makeMove(event) {
     let playerOne = createPlayer($playerOneName.value, '1');
     let playerTwo = createPlayer($playerTwoName.value, '2');
 
-    return {playerOne, playerTwo}
-})();
-
-function makeMove(event) {
     if (counter.getCount() % 2 === 0) {
-        event.target.textContent = `${game.playerOne.token()}`;
+        event.target.textContent = `${playerOne.token()}`;
         counter.addCount();
+        displayOnBanner(`${playerTwo.name}'s turn`);
+        readBoard(boardArray);
     } else {
-        event.target.textContent = `${game.playerTwo.token()}`;
+        event.target.textContent = `${playerTwo.token()}`;
         counter.addCount();
+        displayOnBanner(`${playerOne.name}'s turn`);
+        readBoard(boardArray);
     }
 }
 
-function declareWinner() {
+function displayOnBanner(string) {
+    $banner.textContent = string;
+}
 
+function readBoard(array) {
+    if (array[0].textContent === 'X' && array[1].textContent === 'X' && array[2].textContent === 'X' ||
+    array[3].textContent === 'X' && array[4].textContent === 'X' && array[5].textContent === 'X' ||
+    array[6].textContent === 'X' && array[7].textContent === 'X' && array[8].textContent === 'X' ||
+    array[0].textContent === 'X' && array[4].textContent === 'X' && array[8].textContent === 'X' ||
+    array[2].textContent === 'X' && array[4].textContent === 'X' && array[6].textContent === 'X') {
+        displayOnBanner(`${playerOne.value} won!`);
+    } else if (array[0].textContent === 'O' && array[1].textContent === 'O' && array[2].textContent === 'O' ||
+    array[3].textContent === 'O' && array[4].textContent === 'O' && array[5].textContent === 'O' ||
+    array[6].textContent === 'O' && array[7].textContent === 'O' && array[8].textContent === 'O' ||
+    array[0].textContent === 'O' && array[4].textContent === 'O' && array[8].textContent === 'O' ||
+    array[2].textContent === 'O' && array[4].textContent === 'O' && array[6].textContent === 'O') {
+        displayOnBanner(`${playerTwo.value} won!`)
+    }
 }
