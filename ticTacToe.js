@@ -48,20 +48,32 @@ function makeMove(event) {
     let playerTwo = createPlayer($playerTwoName.value, '2');
 
     if (counter.getCount() % 2 === 0) {
-        event.target.textContent = `${playerOne.token()}`;
-        counter.addCount();
-        displayOnBanner(`${playerTwo.name}'s turn`);
-        readBoard(boardArray);
+        if (event.target.textContent != '') {
+            displayOnBanner('Someone has already made a move in that square.')
+        } else {
+            event.target.textContent = `${playerOne.token()}`;
+            counter.addCount();
+            displayOnBanner(`${playerTwo.name}'s turn`);
+            readBoard(boardArray);
+        }
     } else {
-        event.target.textContent = `${playerTwo.token()}`;
-        counter.addCount();
-        displayOnBanner(`${playerOne.name}'s turn`);
-        readBoard(boardArray);
+        if (event.target.textContent != '') {
+            displayOnBanner('Someone has already made a move in that square.')
+        } else {
+            event.target.textContent = `${playerTwo.token()}`;
+            counter.addCount();
+            displayOnBanner(`${playerOne.name}'s turn`);
+            readBoard(boardArray);
+        }
     }
 }
 
 function displayOnBanner(string) {
     $banner.textContent = string;
+}
+
+function stopGame() {
+
 }
 
 function readBoard(array) {
