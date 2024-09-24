@@ -15,7 +15,7 @@ function startGame() {
         item.addEventListener('click', makeMove);
         boardArray.push(item);
     });
-displayOnBanner(`${playerOne.value}'s turn`);
+    display.onBanner(`${$playerOneName.value}'s turn`)
 }
 
 function createPlayer(name, number) {
@@ -49,28 +49,37 @@ function makeMove(event) {
 
     if (counter.getCount() % 2 === 0) {
         if (event.target.textContent != '') {
-            displayOnBanner('Someone has already made a move in that square.')
+            display.onBanner('Someone has already made a move in that square.')
         } else {
             event.target.textContent = `${playerOne.token()}`;
             counter.addCount();
-            displayOnBanner(`${playerTwo.name}'s turn`);
+            display.onBanner(`${playerTwo.name}'s turn`);
             readBoard(boardArray);
         }
     } else {
         if (event.target.textContent != '') {
-            displayOnBanner('Someone has already made a move in that square.')
+            display.onBanner('Someone has already made a move in that square.')
         } else {
             event.target.textContent = `${playerTwo.token()}`;
             counter.addCount();
-            displayOnBanner(`${playerOne.name}'s turn`);
+            display.onBanner(`${playerOne.name}'s turn`);
             readBoard(boardArray);
         }
     }
 }
 
-function displayOnBanner(string) {
-    $banner.textContent = string;
-}
+const display = (function() {
+    const resetBoard = function() {
+        $boardBtn.forEach((item) => {
+            item.textContent = '';
+        })};
+
+    const onBanner = (string) => $banner.textContent = string;
+
+    return {resetBoard, onBanner}
+})();
+
+
 
 function stopGame() {
 
@@ -82,12 +91,12 @@ function readBoard(array) {
     array[6].textContent === 'X' && array[7].textContent === 'X' && array[8].textContent === 'X' ||
     array[0].textContent === 'X' && array[4].textContent === 'X' && array[8].textContent === 'X' ||
     array[2].textContent === 'X' && array[4].textContent === 'X' && array[6].textContent === 'X') {
-        displayOnBanner(`${playerOne.value} won!`);
+        display.onBanner(`${playerOne.value} won!`);
     } else if (array[0].textContent === 'O' && array[1].textContent === 'O' && array[2].textContent === 'O' ||
     array[3].textContent === 'O' && array[4].textContent === 'O' && array[5].textContent === 'O' ||
     array[6].textContent === 'O' && array[7].textContent === 'O' && array[8].textContent === 'O' ||
     array[0].textContent === 'O' && array[4].textContent === 'O' && array[8].textContent === 'O' ||
     array[2].textContent === 'O' && array[4].textContent === 'O' && array[6].textContent === 'O') {
-        displayOnBanner(`${playerTwo.value} won!`)
+        display.onBanner(`${playerTwo.value} won!`)
     }
 }
